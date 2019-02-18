@@ -26,7 +26,7 @@ const getApiAndEmit = async socket => {
     //   "https://api.darksky.net/forecast/PUT_YOUR_API_KEY_HERE/43.7695,11.2558"
     // );
     //socket.emit("FromAPI", res.data.currently.temperature);
-    socket.emit("FromAPI", `users: ${users}`);
+    socket.emit("FromAPI", users);
   } catch (error) {
     console.error(`Error: ${error.code}`);
   }
