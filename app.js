@@ -8,12 +8,16 @@ const app = express();
 app.use(index);
 const server = http.createServer(app);
 const io = socketIo(server);
+let users = 0;
 io.on("connection", socket => {
-  console.log("New client connected"), setInterval(
-    () => getApiAndEmit(socket),
-    1000
-  );
-  socket.on("disconnect", () => console.log("Client disconnected"));
+	users = users + 1;
+		console.log("New client connected"), setInterval(
+	() => getApiAndEmit(socket), 1000);
+
+  	socket.on("disconnect", () => {
+  		users = users - 1;
+  		console.log("Client disconnected");
+	});
 });
 
 const getApiAndEmit = async socket => {
@@ -22,7 +26,7 @@ const getApiAndEmit = async socket => {
     //   "https://api.darksky.net/forecast/PUT_YOUR_API_KEY_HERE/43.7695,11.2558"
     // );
     //socket.emit("FromAPI", res.data.currently.temperature);
-    socket.emit("FromAPI", new Date().getSeconds());
+    socket.emit("FromAPI", `users: ${users}`);
   } catch (error) {
     console.error(`Error: ${error.code}`);
   }
