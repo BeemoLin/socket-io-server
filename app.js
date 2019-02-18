@@ -11,7 +11,7 @@ const io = socketIo(server);
 let maxUsers = 0;
 let users = 0;
 io.on("connection", socket => {
-	if(users > maxUsers) {users = users + 1}
+	if(users > maxUsers) {maxUsers = maxUsers + 1}
 	users = users + 1;
 		console.log("New client connected"), setInterval(
 	() => getApiAndEmit(socket), 1000);
