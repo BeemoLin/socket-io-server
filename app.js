@@ -8,8 +8,10 @@ const app = express();
 app.use(index);
 const server = http.createServer(app);
 const io = socketIo(server);
+let maxUsers = 0;
 let users = 0;
 io.on("connection", socket => {
+	if(users > maxUsers) {users = users + 1}
 	users = users + 1;
 		console.log("New client connected"), setInterval(
 	() => getApiAndEmit(socket), 1000);
@@ -26,7 +28,7 @@ const getApiAndEmit = async socket => {
     //   "https://api.darksky.net/forecast/PUT_YOUR_API_KEY_HERE/43.7695,11.2558"
     // );
     //socket.emit("FromAPI", res.data.currently.temperature);
-    socket.emit("FromAPI", users);
+    socket.emit("FromAPI", {users: users, maxUsers: maxUsers});
   } catch (error) {
     console.error(`Error: ${error.code}`);
   }
